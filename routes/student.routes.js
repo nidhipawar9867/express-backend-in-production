@@ -12,3 +12,4 @@ studentRouter.route("/:id")
     .put(studentController.updateStudent)
     .delete(studentController.deleteStudent)
 
+studentRouter.get("/fullname/:id", studentController.getStudentByIdAndReturnFullName)

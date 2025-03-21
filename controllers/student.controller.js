@@ -59,11 +59,25 @@ const updateStudent = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+const getStudentByIdAndReturnFullName = async (req, res)=>{
+    // TODO get student id from request
+    const {id} = req.params
+    // TODO get student by id from db
+    const found = await Student.findById(id)
+    // TODO get fullname from your model using custom method
+    // and return response
+    if(!found){
+        return res.status(404).json({message: "Student not found"})
+    }
+    res.status(200).json({fullName: found.fullName()})
+    
+}
 
 export default {
     createStudent,
     getAllStudents,
     getStudentById,
     deleteStudent,
-    updateStudent
+    updateStudent,
+    getStudentByIdAndReturnFullName
 }
