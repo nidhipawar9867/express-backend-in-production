@@ -13,3 +13,5 @@ studentRouter.route("/:id")
     .delete(studentController.deleteStudent)
 
 studentRouter.get("/fullname/:id", studentController.getStudentByIdAndReturnFullName)
+
+studentRouter.post("/login", )

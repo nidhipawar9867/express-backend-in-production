@@ -59,18 +59,48 @@ const updateStudent = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
-const getStudentByIdAndReturnFullName = async (req, res)=>{
+const getStudentByIdAndReturnFullName = async (req, res) => {
     // TODO get student id from request
-    const {id} = req.params
+    const { id } = req.params
     // TODO get student by id from db
     const found = await Student.findById(id)
     // TODO get fullname from your model using custom method
     // and return response
-    if(!found){
-        return res.status(404).json({message: "Student not found"})
+    if (!found) {
+        return res.status(404).json({ message: "Student not found" })
     }
-    res.status(200).json({fullName: found.fullName()})
-    
+    res.status(200).json({ fullName: found.fullName() })
+
+}
+const login = async (req, res) => {
+    // TODO get data from request
+    const { uname, password } = req.body
+    // you can ignore value part in js 
+    // if you have same name for key and value
+    // const { username, password } = req.body
+
+    // TODO check student exists or not
+    // find student in database
+    const student = Student.find({ username: uname })
+    // you can ignore value part in js 
+    // if you have same name for key and value
+    // const student = Student.find({username})
+    // TODO if student not found return failed res
+
+    if (!student) {
+        return res.status(400).json({ message: "user not found" })
+    }
+
+    // TODO match password
+    // if password matched - 
+    // return success response 
+    // if not matched - return failed response
+    if (student.comparePassword(password)) {
+        res.status(200)
+            .json({ message: "Login Success" })
+    } else {
+        res.status(400).json({ message: "Wrong pasword" })
+    }
 }
 
 export default {
@@ -79,5 +109,6 @@ export default {
     getStudentById,
     deleteStudent,
     updateStudent,
-    getStudentByIdAndReturnFullName
+    getStudentByIdAndReturnFullName,
+    login
 }
