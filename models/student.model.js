@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const studentSChema = new mongoose.Schema({
     username: String,
-    eamil: {
+    email: {
         type: String,
         index: true,
         unique: true,

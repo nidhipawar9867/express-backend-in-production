@@ -2,11 +2,15 @@ import express from 'express'
 import dotenv from 'dotenv'
 import { connectDB } from './config/mongodb_connection.js'
 import { studentRouter } from './routes/student.routes.js'
+import { logging } from './middleware/logging.middleware.js'
 
 dotenv.config()
 const app = express()
 app.use(express.static("public"))
 app.set('view engine', 'ejs')
+app.use(express.json())
+
+app.use(logging)
 
 app.use("/students", studentRouter)
 
