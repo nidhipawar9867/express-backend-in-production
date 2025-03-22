@@ -14,4 +14,4 @@ studentRouter.route("/:id")
 
 studentRouter.get("/fullname/:id", studentController.getStudentByIdAndReturnFullName)
 
-studentRouter.post("/login", )
+studentRouter.post("/login", studentController.login)

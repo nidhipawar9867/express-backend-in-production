@@ -81,12 +81,14 @@ const login = async (req, res) => {
 
     // TODO check student exists or not
     // find student in database
-    const student = Student.find({ username: uname })
+    console.log("uname ", uname)
+
+    const student = await Student.findOne({ username: uname })
     // you can ignore value part in js 
     // if you have same name for key and value
     // const student = Student.find({username})
     // TODO if student not found return failed res
-
+console.log("Student ", student )
     if (!student) {
         return res.status(400).json({ message: "user not found" })
     }
