@@ -2,6 +2,16 @@ import { Student } from "../models/student.model.js";
 
 const createStudent = async (req, res) => {
     try {
+        const {username, email} = req.body
+        const findByUsername = await Student.findOne({username})
+        if(findByUsername){
+            return res.status(400).json({message: "Username already exists"})
+        }
+        const findByEmail = await Student.findOne({email})
+
+        if(findByEmail){
+            return res.status(400).json({message: "Email already exists"})
+        }
         const student = new Student(req.body);
         const savedStudent = await student.save();
         res.status(201).json(savedStudent);
@@ -51,6 +61,7 @@ const updateStudent = async (req, res) => {
             // this method will return prev student
             new: true
         });
+        console.log("updatedStudent ", updatedStudent)
         if (!updatedStudent) {
             return res.status(404).json({ message: 'Student not found' });
         }
@@ -74,16 +85,14 @@ const getStudentByIdAndReturnFullName = async (req, res) => {
 }
 const login = async (req, res) => {
     // TODO get data from request
-    const { uname, password } = req.body
-    // you can ignore value part in js 
-    // if you have same name for key and value
-    // const { username, password } = req.body
-
+    const { username, password } = req.body
+   console.log("username ", username)
+   console.log("password ", password)
     // TODO check student exists or not
     // find student in database
-    console.log("uname ", uname)
+    
 
-    const student = await Student.findOne({ username: uname })
+    const student = await Student.findOne({username})
     // you can ignore value part in js 
     // if you have same name for key and value
     // const student = Student.find({username})

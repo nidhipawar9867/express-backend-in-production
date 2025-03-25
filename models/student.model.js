@@ -2,7 +2,13 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 
 const studentSChema = new mongoose.Schema({
-    username: String,
+    username: {
+        type: String,
+        unique: true,
+        required: true,
+        trim: true,   // "Ram " => "Ram"
+        lowercase: true  // "Ram" => "ram"
+    },
     email: {
         type: String,
         index: true,
