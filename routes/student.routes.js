@@ -1,6 +1,8 @@
 import express from 'express';
 import studentController from '../controllers/student.controller.js';
-
+import multer from 'multer';   
+import { storage } from '../config/fileupload_config.js';
+const upload = multer({storage})
 export const studentRouter = express.Router();
 
 studentRouter.route("/")
@@ -15,3 +17,5 @@ studentRouter.route("/:id")
 studentRouter.get("/fullname/:id", studentController.getStudentByIdAndReturnFullName)
 
 studentRouter.post("/login", studentController.login)
+
+studentRouter.post("/upload", upload.single("profile-photo"), studentController.uploadFile);

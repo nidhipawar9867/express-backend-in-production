@@ -28,6 +28,7 @@ const studentSChema = new mongoose.Schema({
         required: true,
         default: Date.now()
     },
+    profilePhoto: String
 
 },
     { timestamps: true }

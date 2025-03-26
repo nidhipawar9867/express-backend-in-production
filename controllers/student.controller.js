@@ -2,15 +2,15 @@ import { Student } from "../models/student.model.js";
 
 const createStudent = async (req, res) => {
     try {
-        const {username, email} = req.body
-        const findByUsername = await Student.findOne({username})
-        if(findByUsername){
-            return res.status(400).json({message: "Username already exists"})
+        const { username, email } = req.body
+        const findByUsername = await Student.findOne({ username })
+        if (findByUsername) {
+            return res.status(400).json({ message: "Username already exists" })
         }
-        const findByEmail = await Student.findOne({email})
+        const findByEmail = await Student.findOne({ email })
 
-        if(findByEmail){
-            return res.status(400).json({message: "Email already exists"})
+        if (findByEmail) {
+            return res.status(400).json({ message: "Email already exists" })
         }
         const student = new Student(req.body);
         const savedStudent = await student.save();
@@ -86,18 +86,18 @@ const getStudentByIdAndReturnFullName = async (req, res) => {
 const login = async (req, res) => {
     // TODO get data from request
     const { username, password } = req.body
-   console.log("username ", username)
-   console.log("password ", password)
+    console.log("username ", username)
+    console.log("password ", password)
     // TODO check student exists or not
     // find student in database
-    
 
-    const student = await Student.findOne({username})
+
+    const student = await Student.findOne({ username })
     // you can ignore value part in js 
     // if you have same name for key and value
     // const student = Student.find({username})
     // TODO if student not found return failed res
-console.log("Student ", student )
+    console.log("Student ", student)
     if (!student) {
         return res.status(400).json({ message: "user not found" })
     }
@@ -108,9 +108,21 @@ console.log("Student ", student )
     // if not matched - return failed response
     if (student.comparePassword(password)) {
         res.status(200)
-            .json({ message: "Login Success" })
+            .json(student)
     } else {
         res.status(400).json({ message: "Wrong pasword" })
+    }
+}
+const uploadFile = async (req, res) => {
+    console.log("req.file", req.file);
+    if (req.file) {
+        const updatedStudent = await Student.findByIdAndUpdate(req.body.id, { profilePhoto: req.file.filename })
+        if (updatedStudent) {
+            return res.status(200).json({ message: "File uploaded and student updated" });
+        }
+        return res.status(200).json({ message: "File uploaded but student not updated" });
+    } else {
+        res.status(400).json({ message: "File not uploaded" });
     }
 }
 
@@ -121,5 +133,6 @@ export default {
     deleteStudent,
     updateStudent,
     getStudentByIdAndReturnFullName,
-    login
+    login,
+    uploadFile
 }
