@@ -1,4 +1,5 @@
 import { Student } from "../models/student.model.js";
+import fs from 'fs';
 
 const createStudent = async (req, res) => {
     try {
@@ -116,11 +117,16 @@ const login = async (req, res) => {
 const uploadFile = async (req, res) => {
     console.log("req.file", req.file);
     if (req.file) {
-        const updatedStudent = await Student.findByIdAndUpdate(req.body.id, { profilePhoto: req.file.filename })
+        const updatedStudent = await Student.findByIdAndUpdate(req.body.id, { profilePhoto: req.file.filename },{
+            new: true
+        })
         if (updatedStudent) {
-            return res.status(200).json({ message: "File uploaded and student updated" });
+            return res.status(200).json(updatedStudent);
         }
-        return res.status(200).json({ message: "File uploaded but student not updated" });
+        // if student not updated delete the file from server and return failed response
+        // unlinkSync is used to delete file from server
+        fs.unlinkSync(req.file.path);
+        return res.status(400).json({ message: "File uploaded rejected because student info not updated" });
     } else {
         res.status(400).json({ message: "File not uploaded" });
     }
