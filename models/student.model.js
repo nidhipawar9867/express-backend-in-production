@@ -25,7 +25,7 @@ const studentSChema = new mongoose.Schema({
     },
     dob: {
         type: Date,
-        required: true,
+        required: false,
         default: Date.now()
     },
     profilePhoto: String
